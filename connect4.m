@@ -24,7 +24,7 @@ function connect4()
         imagesc(board);
     
         % Check for a win
-        if checkWin(board, row, column, currentPlayer)
+        if checkWin(board, currentPlayer)
             disp(board);
             fprintf('Player %d wins!\n', currentPlayer);
             imagesc(board);
@@ -53,27 +53,52 @@ function connect4()
     end
 end
 
-function isWin = checkWin(board, row, column, player)
+function isWin = checkWin(board, player)
     % Check for a win in the horizontal, vertical, and diagonal directions
-    isWin = checkLine(board(row, :), player) || ...
-    checkLine(board(:, column), player) || ...
-    checkLine(diag(board, column - row), player) || ...
-    checkLine(diag(flipud(board), 7 - column - row), player);
+    isWin = checkLine(board, player);
 end
 
-function isWin = checkLine(line, player)
+function isWin = checkLine(board, player)
     % Check if the given line has four consecutive pieces of the same player
     isWin = false;
-    count = 0;
-    for i = 1:length(line)
-        if line(i) == player
-            count = count + 1;
-            if count == 4
-                isWin = true;
-                break;
-            end
-        else
-            count = 0;
-        end
-    end
+    
+    % Check vertical win
+     for y=1:7
+         for x=1:3
+             if board(x,y)==player&&board(x+1,y)==player&&board(x+2,y)==player&&board(x+3,y)==player
+                 isWin = true;
+                 break
+             end 
+         end 
+     end 
+
+    % Check horizontal win
+     for y=1:4
+         for x=1:6
+             if board(x,y)==player&&board(x,y+1)==player&&board(x,y+2)==player&&board(x,y+3)==player
+                 isWin = true;
+                 break
+             end 
+         end 
+     end 
+
+    % Checking diagonal win bottom left top right
+    for y=1:4
+         for x=1:3
+             if board(x,y)==player&&board(x+1,y+1)==player&&board(x+2,y+2)==player&&board(x+3,y+3)==player
+                 isWin = true;
+                 break
+             end 
+         end 
+    end 
+    
+    % Checking diagonal win bottom right top left
+    for y=4:7
+         for x=1:3
+             if board(x,y)==player&&board(x+1,y-1)==player&&board(x+2,y-2)==player&&board(x+3,y-3)==player
+                 isWin = true;
+                 break
+             end 
+         end 
+     end 
 end
