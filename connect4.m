@@ -44,6 +44,7 @@ function connect4()
         if all(board(:) ~= 0)
             disp(board);
             fprintf('Draw!\n');
+            title('Draw!');
             break;
         end
     
